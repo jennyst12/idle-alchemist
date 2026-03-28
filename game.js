@@ -465,8 +465,8 @@ function resetGame() {
 
 initState();
 // Pre-fill sulfur timer so the first collect is available immediately
-if (state.timers['sulfur'] === 0) {
-  state.timers['sulfur'] = REAGENTS.find(r => r.id === 'sulfur').interval * 1000;
-}
+//if (state.timers['sulfur'] === 0) {
+//  state.timers['sulfur'] = REAGENTS.find(r => r.id === 'sulfur').interval * 1000;
+//}
 log('The Workshop stirs to life. Collect Brimstone to begin.', 'highlight');
 requestAnimationFrame(tick);
