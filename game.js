@@ -165,7 +165,7 @@ function initState() {
 
 function renderReagents() {
   const panel = document.getElementById('reagentsPanel');
-  panel.innerHTML = '';
+
   REAGENTS.forEach(r => {
     const unlocked = !!state.unlocked[r.id];
     const canUnlock = !unlocked && state.essence >= r.unlockCost && r.unlockCost > 0;
@@ -174,7 +174,26 @@ function renderReagents() {
     const progress = unlocked ? Math.min((state.timers[r.id] || 0) / intervalMs, 1) : 0;
     const ready = progress >= 1 && unlocked && !isAuto;
 
-    const card = document.createElement('div');
+    // Create card on first render, update in place on subsequent ticks
+    let card = panel.querySelector(`[data-id="${r.id}"]`);
+    if (!card) {
+      card = document.createElement('div');
+      card.dataset.id = r.id;
+      card.innerHTML = `
+        <div class="reagent-header">
+          <span class="reagent-icon">${r.icon}</span>
+          <span class="reagent-name reagent-name-text"></span>
+          <span class="reagent-count"></span>
+        </div>
+        <div class="reagent-desc reagent-desc-text"></div>
+        <div class="progress-wrap"><div class="progress-bar"></div></div>
+        <button class="collect-btn"></button>
+      `;
+      card.querySelector('.collect-btn').addEventListener('click', () => handleCollect(r.id));
+      panel.appendChild(card);
+    }
+
+    // Update classes
     card.className = [
       'reagent-card',
       r.color,
@@ -182,31 +201,29 @@ function renderReagents() {
       ready ? 'ready' : '',
       progress >= 0.7 && unlocked ? 'active-glow' : '',
     ].filter(Boolean).join(' ');
-    card.dataset.id = r.id;
 
-    let btnLabel, btnDisabled;
+    // Update text content
+    const mult = state.multiplier[r.id] || 1;
+    card.querySelector('.reagent-name-text').innerHTML =
+      r.name + (isAuto ? '<span class="auto-badge">AUTO</span>' : '');
+    card.querySelector('.reagent-count').textContent =
+      fmt(state.timers[r.id + '_collected'] || 0) + ' collected';
+    card.querySelector('.reagent-desc-text').textContent =
+      r.desc + (unlocked ? ` · ${r.interval}s · +${fmt(r.value * mult)} essence` : '');
+    card.querySelector('.progress-bar').style.width = (progress * 100).toFixed(1) + '%';
+
+    // Update button
+    const btn = card.querySelector('.collect-btn');
     if (!unlocked) {
-      btnLabel = r.unlockCost === 0 ? 'Available' : `Unlock — ${fmt(r.unlockCost)} essence`;
-      btnDisabled = !canUnlock && r.unlockCost > 0 ? 'disabled' : '';
+      btn.textContent = r.unlockCost === 0 ? 'Available' : `Unlock — ${fmt(r.unlockCost)} essence`;
+      btn.disabled = !canUnlock && r.unlockCost > 0;
     } else if (isAuto) {
-      btnLabel = 'Auto-collecting…';
-      btnDisabled = 'disabled';
+      btn.textContent = 'Auto-collecting…';
+      btn.disabled = true;
     } else {
-      btnLabel = ready ? `Collect (+${fmt(r.value * (state.multiplier[r.id] || 1))})` : 'Distilling…';
-      btnDisabled = ready ? '' : 'disabled';
+      btn.textContent = ready ? `Collect (+${fmt(r.value * mult)})` : 'Distilling…';
+      btn.disabled = !ready;
     }
-
-    card.innerHTML = `
-      <div class="reagent-header">
-        <span class="reagent-icon">${r.icon}</span>
-        <span class="reagent-name">${r.name}${isAuto ? '<span class="auto-badge">AUTO</span>' : ''}</span>
-        <span class="reagent-count">${fmt(state.timers[r.id + '_collected'] || 0)} collected</span>
-      </div>
-      <div class="reagent-desc">${r.desc}${unlocked ? ` · ${r.interval}s · +${fmt(r.value * (state.multiplier[r.id] || 1))} essence` : ''}</div>
-      <div class="progress-wrap"><div class="progress-bar" style="width:${(progress * 100).toFixed(1)}%"></div></div>
-      <button class="collect-btn" onclick="handleCollect('${r.id}')" ${btnDisabled}>${btnLabel}</button>
-    `;
-    panel.appendChild(card);
   });
 }
 
@@ -447,5 +464,9 @@ function resetGame() {
 // ─── Boot ─────────────────────────────────────────────────────────────────────
 
 initState();
+// Pre-fill sulfur timer so the first collect is available immediately
+//if (state.timers['sulfur'] === 0) {
+//  state.timers['sulfur'] = REAGENTS.find(r => r.id === 'sulfur').interval * 1000;
+//}
 log('The Workshop stirs to life. Collect Brimstone to begin.', 'highlight');
 requestAnimationFrame(tick);

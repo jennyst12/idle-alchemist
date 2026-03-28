@@ -224,6 +224,7 @@ header .subtitle {
 .collect-btn:disabled {
   opacity: 0.35;
   cursor: not-allowed;
+  font-style: italic;
 }
 
 .collect-btn::after {
