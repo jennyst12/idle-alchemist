@@ -1,2 +1,2 @@
 # idle-alchemist
-Alchemist Lab Idle Game
+Alchemist Lab Idle Game. Created with Claude.
