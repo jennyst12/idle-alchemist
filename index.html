@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>The Alchemist's Workshop</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<div class="container">
+  <header>
+    <h1>⚗ The Alchemist's Workshop</h1>
+    <p class="subtitle">Gather reagents. Transmute essence. Uncover the Great Work.</p>
+  </header>
+
+  <div class="essence-bar">
+    <div class="total-section">
+      <div class="essence-label">Essence</div>
+      <div class="essence-total" id="essenceDisplay">0</div>
+    </div>
+    <div class="total-section">
+      <div class="essence-label">Total Earned</div>
+      <div class="total-earned" id="totalEarned">0</div>
+    </div>
+    <div class="total-section">
+      <div class="essence-label">Per Second</div>
+      <div class="essence-rate" id="rateDisplay">+0.00/s</div>
+    </div>
+  </div>
+
+  <div class="game-layout">
+    <div>
+      <div class="section-title">⬡ Reagent Flasks</div>
+      <div class="reagents-panel" id="reagentsPanel"></div>
+    </div>
+    <div>
+      <div class="section-title">✦ Transmutations</div>
+      <div class="upgrades-panel" id="upgradesPanel"></div>
+    </div>
+
+    <div class="save-panel">
+      <span class="label">Grimoire:</span>
+      <button class="save-btn" onclick="exportSave()">Export Save</button>
+      <textarea class="save-code" id="saveCode" placeholder="Paste save code here…" spellcheck="false"></textarea>
+      <button class="save-btn" onclick="importSave()">Import Save</button>
+      <button class="save-btn danger" onclick="resetGame()">Reset</button>
+    </div>
+
+    <div>
+      <div class="section-title">📜 Chronicle</div>
+      <div class="log-panel" id="logPanel"></div>
+    </div>
+  </div>
+</div>
+
+<script src="game.js"></script>
+</body>
+</html>
