@@ -229,23 +229,44 @@ function renderReagents() {
 
 function renderUpgrades() {
   const panel = document.getElementById('upgradesPanel');
-  panel.innerHTML = '';
+
   UPGRADES.forEach(u => {
     const avail = u.available();
     const canBuy = avail && !u.purchased && state.essence >= u.cost;
-    const card = document.createElement('div');
+
+    // Create card on first render, update in place on subsequent ticks
+    let card = panel.querySelector(`[data-upgrade-id="${u.id}"]`);
+    if (!card) {
+      card = document.createElement('div');
+      card.dataset.upgradeId = u.id;
+      card.innerHTML = `
+        <div class="upgrade-header">
+          <span class="upgrade-name-text"></span>
+          <span class="upgrade-cost-text"></span>
+        </div>
+        <div class="upgrade-desc">${u.desc}</div>
+        <button class="upgrade-btn"></button>
+      `;
+      card.querySelector('.upgrade-btn').addEventListener('click', () => buyUpgrade(u.id));
+      panel.appendChild(card);
+    }
+
+    // Update classes
     card.className = `upgrade-card ${u.purchased ? 'purchased' : ''} ${!avail ? 'locked' : ''}`;
-    card.innerHTML = `
-      <div class="upgrade-header">
-        <span class="upgrade-name">${u.purchased ? '✓ ' : ''}${u.name}</span>
-        <span class="upgrade-cost">${u.purchased ? 'Done' : fmt(u.cost) + ' ✦'}</span>
-      </div>
-      <div class="upgrade-desc">${u.desc}</div>
-      ${!u.purchased ? `<button class="upgrade-btn" onclick="buyUpgrade('${u.id}')" ${canBuy ? '' : 'disabled'}>
-        ${!avail ? 'Locked' : canBuy ? 'Purchase' : 'Insufficient Essence'}
-      </button>` : ''}
-    `;
-    panel.appendChild(card);
+
+    // Update text
+    card.querySelector('.upgrade-name-text').textContent = (u.purchased ? '✓ ' : '') + u.name;
+    card.querySelector('.upgrade-cost-text').textContent = u.purchased ? 'Done' : fmt(u.cost) + ' ✦';
+
+    // Update button
+    const btn = card.querySelector('.upgrade-btn');
+    if (u.purchased) {
+      btn.style.display = 'none';
+    } else {
+      btn.style.display = '';
+      btn.textContent = !avail ? 'Locked' : canBuy ? 'Purchase' : 'Insufficient Essence';
+      btn.disabled = !canBuy;
+    }
   });
 }
 
@@ -464,9 +485,5 @@ function resetGame() {
 // ─── Boot ─────────────────────────────────────────────────────────────────────
 
 initState();
-// Pre-fill sulfur timer so the first collect is available immediately
-//if (state.timers['sulfur'] === 0) {
-//  state.timers['sulfur'] = REAGENTS.find(r => r.id === 'sulfur').interval * 1000;
-//}
 log('The Workshop stirs to life. Collect Brimstone to begin.', 'highlight');
 requestAnimationFrame(tick);
