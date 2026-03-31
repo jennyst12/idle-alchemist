@@ -7,6 +7,8 @@ const SKINS = {
     subtitle: 'Gather reagents. Transmute essence. Uncover the Great Work.',
     currency: 'essence',
     currencySymbol: '✦',
+    waiting: 'Distilling…',
+    collecting: 'Collect',
     reagents: [
       { name: 'Brimstone',          icon: '🜍', desc: 'The fiery principle. Click to collect.' },
       { name: 'Quicksilver',        icon: '☿',  desc: 'The fluid spirit. Collected every 10s.' },
@@ -32,6 +34,8 @@ const SKINS = {
     subtitle: 'Tend your garden. Gather herbs. Brew gentle remedies.',
     currency: 'petals',
     currencySymbol: '❀',
+    waiting: 'Growing…',
+    collecting: 'Gather',
     reagents: [
       { name: 'Chamomile',   icon: '🌼', desc: 'A gentle bloom. Click to gather.' },
       { name: 'Lavender',    icon: '💜', desc: 'Fragrant sprigs. Gathered every 10s.' },
@@ -57,6 +61,8 @@ const SKINS = {
     subtitle: 'Collect cuddles. Grow flowers. Spread happiness forever!',
     currency: 'cuddles',
     currencySymbol: '💖',
+    waiting: 'Snuggling…',
+    collecting: 'Collect',
     reagents: [
       { name: 'Tiny Meows',    icon: '🐱', desc: 'The tiniest meow! Click to collect!' },
       { name: 'Daisy Chains',  icon: '🌸', desc: 'Pretty daisy chains! Every 10s!' },
@@ -82,6 +88,8 @@ const SKINS = {
     subtitle: 'Collect items. Accumulate points. Unlock upgrades.',
     currency: 'points',
     currencySymbol: '★',
+    waiting: 'Waiting…',
+    collecting: 'Collect',
     reagents: [
       { name: 'Item A', icon: '🟧', desc: 'Produces every 4s. Click to collect.' },
       { name: 'Item B', icon: '🟦', desc: 'Produces every 10s.' },
@@ -124,8 +132,8 @@ function applySkin(skinKey) {
 // ─── Game Data ───────────────────────────────────────────────────────────────
 
 const REAGENTS = [
-  { id: 'sulfur',     color: 'c-amber',  interval: 4,  value: 1,   unlockCost: 0    },
-  { id: 'mercury',    color: 'c-blue',   interval: 10, value: 5,   unlockCost: 15   },
+  { id: 'sulfur',     color: 'c-amber',  interval: 3,  value: 1,   unlockCost: 0    },
+  { id: 'mercury',    color: 'c-blue',   interval: 10, value: 10,  unlockCost: 15   },
   { id: 'salt',       color: 'c-green',  interval: 20, value: 10,  unlockCost: 200  },
   { id: 'phosphorus', color: 'c-purple', interval: 40, value: 30,  unlockCost: 1000 },
   { id: 'gold',       color: 'c-gold',   interval: 90, value: 100, unlockCost: 8000 },
@@ -138,12 +146,12 @@ const UPGRADES = [
     available: () => state.unlocked.sulfur, purchased: false,
   },
   {
-    id: 'auto_mercury',    cost: 500,
+    id: 'auto_mercury',    cost: 350,
     effect: () => { state.auto.mercury = true; log(skinMsg('auto', 1)); },
     available: () => state.unlocked.mercury, purchased: false,
   },
   {
-    id: 'double_sulfur',   cost: 300,
+    id: 'double_sulfur',   cost: 200,
     effect: () => { state.multiplier.sulfur = (state.multiplier.sulfur || 1) * 2; log(skinMsg('double', 0)); },
     available: () => state.unlocked.sulfur, purchased: false,
   },
@@ -269,7 +277,8 @@ function renderReagents() {
       btn.textContent = 'Auto-collecting…';
       btn.disabled = true;
     } else {
-      btn.textContent = ready ? `Collect (+${fmt(r.value * mult)})` : 'Distilling…';
+      const skin = getSkin();
+      btn.textContent = ready ? `${skin.collecting} (+${fmt(r.value * mult)})` : skin.waiting;
       btn.disabled = !ready;
     }
   });
