@@ -134,9 +134,9 @@ function applySkin(skinKey) {
 const REAGENTS = [
   { id: 'sulfur',     color: 'c-amber',  interval: 3,  value: 1,   unlockCost: 0    },
   { id: 'mercury',    color: 'c-blue',   interval: 10, value: 10,  unlockCost: 15   },
-  { id: 'salt',       color: 'c-green',  interval: 20, value: 10,  unlockCost: 200  },
-  { id: 'phosphorus', color: 'c-purple', interval: 40, value: 30,  unlockCost: 1000 },
-  { id: 'gold',       color: 'c-gold',   interval: 90, value: 100, unlockCost: 8000 },
+  { id: 'salt',       color: 'c-green',  interval: 20, value: 30,  unlockCost: 200  },
+  { id: 'phosphorus', color: 'c-purple', interval: 40, value: 100,  unlockCost: 1000 },
+  { id: 'gold',       color: 'c-gold',   interval: 90, value: 1000, unlockCost: 8000 },
 ];
 
 const UPGRADES = [
