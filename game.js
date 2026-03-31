@@ -114,7 +114,6 @@ function applySkin(skinKey) {
   document.getElementById('gameTitle').textContent = skin.title;
   document.getElementById('gameSubtitle').textContent = skin.subtitle;
   document.getElementById('essenceLabel').textContent = skin.currency.charAt(0).toUpperCase() + skin.currency.slice(1);
-  document.getElementById('currencySymbol').textContent = skin.currencySymbol;
   // Update skin buttons
   document.querySelectorAll('.skin-btn').forEach(btn => {
     btn.classList.toggle('active', btn.dataset.skin === skinKey);
