@@ -181,7 +181,7 @@ const UPGRADES = [
     available: () => state.unlocked.phosphorus, purchased: false,
   },
   {
-    id: 'auto_gold',       cost: 150000,
+    id: 'auto_gold',       cost: 50000,
     effect: () => { state.auto.gold = true; log(skinMsg('auto', 4)); },
     available: () => state.unlocked.gold, purchased: false,
   },
