@@ -613,3 +613,78 @@ header .subtitle {
 ::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: var(--bg); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+
+/* ─── New collector colour variants ───────────────────────────────────────── */
+
+.c-void   { color: #c39bd3; border-color: #9b59b6; background: rgba(155,89,182,0.07); }
+.c-void   .progress-bar { background: #9b59b6; }
+.c-void   .collect-btn  { color: #c39bd3; border-color: #9b59b6; background: rgba(155,89,182,0.09); }
+
+.c-dragon { color: #f1948a; border-color: #e74c3c; background: rgba(231,76,60,0.07); }
+.c-dragon .progress-bar { background: #e74c3c; }
+.c-dragon .collect-btn  { color: #f1948a; border-color: #e74c3c; background: rgba(231,76,60,0.09); }
+
+.c-celest { color: #f9e79f; border-color: #f1c40f; background: rgba(241,196,15,0.07); }
+.c-celest .progress-bar { background: #f1c40f; }
+.c-celest .collect-btn  { color: #f9e79f; border-color: #f1c40f; background: rgba(241,196,15,0.09); }
+
+/* ─── Prestige panel ───────────────────────────────────────────────────────── */
+
+.prestige-panel {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.6rem 1rem;
+  margin-bottom: 1rem;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  flex-wrap: wrap;
+  min-height: 2.4rem;
+}
+
+.prestige-label {
+  font-size: 0.8rem;
+  color: var(--text-dim);
+  font-style: italic;
+}
+
+.prestige-label strong {
+  color: var(--gold-light);
+  font-style: normal;
+}
+
+.prestige-btn {
+  padding: 0.4rem 1rem;
+  border: 1px solid var(--gold);
+  border-radius: 3px;
+  background: rgba(200,146,42,0.12);
+  color: var(--gold-light);
+  font-family: var(--header-font);
+  font-size: 0.8rem;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: all 0.15s;
+  animation: prestigePulse 2s ease-in-out infinite;
+}
+
+.prestige-btn:hover {
+  background: rgba(200,146,42,0.25);
+  border-color: var(--gold-light);
+}
+
+@keyframes prestigePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(200,146,42,0); }
+  50%       { box-shadow: 0 0 12px rgba(200,146,42,0.5); }
+}
+
+[data-theme="kittens"] .prestige-btn {
+  border-color: var(--gold);
+  animation: kittensPrestigePulse 1.5s ease-in-out infinite;
+}
+
+@keyframes kittensPrestigePulse {
+  0%, 100% { box-shadow: 0 0 0 rgba(230,80,140,0); }
+  50%       { box-shadow: 0 0 14px rgba(230,80,140,0.6); }
+}

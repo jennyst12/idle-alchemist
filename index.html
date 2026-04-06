@@ -12,10 +12,10 @@
     <h1 id="gameTitle">⚗ The Alchemist's Workshop</h1>
     <p class="subtitle" id="gameSubtitle">Gather reagents. Transmute essence. Uncover the Great Work.</p>
     <div class="skin-switcher">
-      <button class="skin-btn" data-skin="dark" onclick="applySkin('dark')">⚗ Alchemist</button>
-      <button class="skin-btn"        data-skin="light"   onclick="applySkin('light')">☀ Garden</button>
-      <button class="skin-btn"        data-skin="kittens" onclick="applySkin('kittens')">🐱 Kittens</button>
-      <button class="skin-btn"        data-skin="plain"   onclick="applySkin('plain')">📋 Plain</button>
+      <button class="skin-btn" data-skin="dark"    onclick="applySkin('dark')">⚗ Alchemist</button>
+      <button class="skin-btn" data-skin="light"   onclick="applySkin('light')">☀ Garden</button>
+      <button class="skin-btn" data-skin="kittens" onclick="applySkin('kittens')">🐱 Kittens</button>
+      <button class="skin-btn" data-skin="plain"   onclick="applySkin('plain')">📋 Plain</button>
     </div>
   </header>
 
@@ -34,6 +34,8 @@
     </div>
   </div>
 
+  <div id="prestigePanel" class="prestige-panel"></div>
+
   <div class="game-layout">
     <div>
       <div class="section-title">Collectors</div>
@@ -46,9 +48,9 @@
 
     <div class="save-panel">
       <span class="label">Progress:</span>
-      <button class="save-btn" onclick="downloadSave()" title="Download save as a file">⬇ Download</button>
-      <button class="save-btn" onclick="uploadSave()"   title="Load save from a file">⬆ Upload</button>
-      <button class="save-btn" onclick="exportSave()"   title="Copy save code to clipboard">📋 Copy Code</button>
+      <button class="save-btn" onclick="downloadSave()">⬇ Download</button>
+      <button class="save-btn" onclick="uploadSave()">⬆ Upload</button>
+      <button class="save-btn" onclick="exportSave()">📋 Copy Code</button>
       <button class="save-btn" onclick="document.getElementById('saveCodeRow').style.display='flex'">📥 Paste Code</button>
       <button class="save-btn danger" onclick="resetGame()">✕ Reset</button>
     </div>
@@ -65,7 +67,6 @@
     </div>
   </div>
 </div>
-
 <script src="game.js"></script>
 </body>
 </html>
